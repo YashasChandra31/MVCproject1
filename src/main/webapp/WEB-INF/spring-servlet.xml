@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- Enable component scanning for the controllers -->
+    <context:component-scan base-package="com.yourpackage.controller" />
+
+    <!-- Enable Spring MVC -->
+    <mvc:annotation-driven />
+
+    <!-- View resolver for JSP files -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- Define your data source -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/schooldb" />
+        <property name="username" value="your_mysql_username" />
+        <property name="password" value="your_mysql_password" />
+    </bean>
+
+    <bean id="studentService" class="com.yourpackage.service.StudentServiceImpl">
+    <property name="studentDAO" ref="studentDAO" />
+</bean>
+
+<bean id="teacherService" class="com.yourpackage.service.TeacherServiceImpl">
+    <property name="teacherDAO" ref="teacherDAO" />
+</bean>
+
+<bean id="studentDAO" class="com.yourpackage.dao.StudentDAOImpl">
+    <constructor-arg ref="dataSource" />
+</bean>
+
+<bean id="teacherDAO" class="com.yourpackage.dao.TeacherDAOImpl">
+    <constructor-arg ref="dataSource" />
+</bean>
+<!-- Configure the Hibernate SessionFactory -->
+    <!-- You need to create your DAO classes and other configurations here -->
+    
+</beans>
